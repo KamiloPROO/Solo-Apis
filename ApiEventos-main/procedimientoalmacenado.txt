@@ -1,0 +1,22 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `eventsAddOrEdit`(IN `_id` INT, IN `_nombre` VARCHAR(100), IN `_imagen` VARCHAR(255), IN `_descripcion` VARCHAR(500), IN `_fecha` VARCHAR(20), IN `_direccion` VARCHAR(100))
+BEGIN
+	IF _id = 0 THEN
+		INSERT INTO eventos (nombre, imagen, descripcion, fecha, direccion)
+        VALUES (_nombre, _imagen, _descripcion, _fecha, _direccion);
+        
+		SET _id = LAST_INSERT_ID();
+    ELSE 
+		UPDATE eventos
+        SET
+			nombre = _nombre,
+            imagen = _imagen,
+            descripcion = _descripcion,
+            fecha = _fecha,
+            direccion = _direccion
+            WHERE id = _id;
+	END IF;
+    
+    SELECT _id AS id;
+END$$
+DELIMITER ;
